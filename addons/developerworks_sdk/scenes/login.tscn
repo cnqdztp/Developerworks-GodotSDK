@@ -1,0 +1,250 @@
+[gd_scene load_steps=4 format=3 uid="uid://cnw8wd5oct544"]
+
+[ext_resource type="Texture2D" uid="uid://b3etd2j75ghja" path="res://Unity_Developerworks_SDK/Art/logo.png" id="1_74rcx"]
+[ext_resource type="Script" uid="uid://bu1ma1wrmtuvr" path="res://addons/developerworks_sdk/scenes/login.gd" id="1_cebhk"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cebhk"]
+bg_color = Color(0, 0, 0, 1)
+
+[node name="Login" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_cebhk")
+
+[node name="Panel" type="Panel" parent="."]
+layout_mode = 1
+anchors_preset = -1
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 531.75
+offset_top = 291.5
+offset_right = -531.75
+offset_bottom = -291.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_cebhk")
+
+[node name="Control" type="Control" parent="Panel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 125.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Identifier_Panel" type="Control" parent="Panel/Control"]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Identifier_Input" type="LineEdit" parent="Panel/Control/Identifier_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.53125
+offset_top = -142.75
+offset_right = 260.53125
+offset_bottom = -87.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "输入邮箱 Email"
+
+[node name="Identifier_Submit" type="Button" parent="Panel/Control/Identifier_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -97.125
+offset_top = -63.75
+offset_right = 97.125
+offset_bottom = -11.75
+grow_horizontal = 2
+grow_vertical = 2
+text = "Login 登录"
+
+[node name="Label" type="Label" parent="Panel/Control/Identifier_Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -294.0
+offset_top = -139.5
+offset_right = 294.0
+offset_bottom = -38.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "To help the developer save cost, we kindly ask you to login with your email.  
+Don't worry, if yout don't have one, we will create one for you.
+为了帮助开发者节省成本，请您使用手机或邮箱登录。
+别担心，如果您没有账户，我们会为您自动创建一个。"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TypeSelection" type="TabBar" parent="Panel/Control/Identifier_Panel"]
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = -54.0
+offset_bottom = -10.0
+grow_horizontal = 2
+current_tab = 0
+tab_alignment = 1
+tab_count = 2
+tab_0/title = "Email 邮箱登录"
+tab_1/title = "SMS 手机短信登录"
+
+[node name="OTP_Panel" type="Control" parent="Panel/Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 54.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="BackButton" type="Button" parent="Panel/Control/OTP_Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_top = -58.0
+offset_right = 80.0
+offset_bottom = -8.0
+grow_horizontal = 2
+text = "← Back 返回"
+
+[node name="OTP_Input" type="LineEdit" parent="Panel/Control/OTP_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -260.53125
+offset_top = -142.75
+offset_right = 260.53125
+offset_bottom = -87.0
+grow_horizontal = 2
+grow_vertical = 2
+placeholder_text = "输入验证码 Verification Code"
+
+[node name="OTP_Submit" type="Button" parent="Panel/Control/OTP_Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -97.125
+offset_top = -63.75
+offset_right = 97.125
+offset_bottom = -11.75
+grow_horizontal = 2
+grow_vertical = 2
+text = "Login 登录"
+
+[node name="Label" type="Label" parent="Panel/Control/OTP_Panel"]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -294.0
+offset_top = -139.5
+offset_right = 294.0
+offset_bottom = -38.5
+grow_horizontal = 2
+grow_vertical = 0
+text = "To help the developer save cost, we kindly ask you to login with your email.  
+Don't worry, if yout don't have one, we will create one for you.
+为了帮助开发者节省成本，请您使用手机或邮箱登录。
+别担心，如果您没有账户，我们会为您自动创建一个。"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Panel"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -138.0
+offset_top = 19.5
+offset_right = 244.0
+offset_bottom = 115.5
+grow_horizontal = 2
+scale = Vector2(0.7268913, 0.71413517)
+texture = ExtResource("1_74rcx")
+stretch_mode = 5
+
+[node name="ErrorLabel" type="Label" parent="."]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -400.0
+offset_top = -80.0
+offset_right = 400.0
+offset_bottom = -40.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_colors/font_color = Color(1, 0.2, 0.2, 1)
+theme_override_font_sizes/font_size = 18
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="LoadingModal" type="Panel" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="LoadingModal"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.7)
+
+[node name="LoadingLabel" type="Label" parent="LoadingModal"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -150.0
+offset_top = -30.0
+offset_right = 150.0
+offset_bottom = 30.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 24
+text = "Loading... 加载中..."
+horizontal_alignment = 1
+vertical_alignment = 1

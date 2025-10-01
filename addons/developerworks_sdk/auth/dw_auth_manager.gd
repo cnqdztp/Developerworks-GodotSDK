@@ -42,8 +42,18 @@ func authenticate_async() -> bool:
 		print("[DW_AuthManager] Valid player token found")
 		return true
 
-	# Step 3: No valid tokens found
-	print("[DW_AuthManager] No valid tokens found - authentication failed")
+	# Step 3: Show login UI if no valid tokens
+	print("[DW_AuthManager] No valid tokens found - showing login UI")
+	var login_success = await _show_login_ui()
+	if login_success:
+		# Reload token after successful login
+		_load_player_token()
+		# Verify with API to ensure player client is set up correctly
+		if await _is_token_valid_with_api_check():
+			print("[DW_AuthManager] Login completed and token verified")
+			return true
+
+	print("[DW_AuthManager] Login failed or cancelled")
 	return false
 
 ## Load shared token (cross-game)
@@ -146,6 +156,13 @@ static func save_player_token(token: String, expires_at: String = "") -> void:
 
 	print("[DW_AuthManager] Player token saved successfully")
 
+## Clear player token (static method for editor plugin)
+static func clear_player_token() -> void:
+	_delete_config_value(PLAYER_TOKEN_KEY)
+	_delete_config_value(TOKEN_EXPIRY_KEY)
+	DWLocalSharedToken.erase_token()
+	print("[DW_AuthManager] Player token cleared (both local and shared)")
+
 ## Clear player token
 func _clear_player_token() -> void:
 	_delete_config_value(PLAYER_TOKEN_KEY)
@@ -153,6 +170,61 @@ func _clear_player_token() -> void:
 	DWLocalSharedToken.erase_token()
 	auth_token = ""
 	print("[DW_AuthManager] Player token cleared")
+
+## Show login UI and wait for completion
+func _show_login_ui() -> bool:
+	# Load login scene
+	var login_scene = load("res://addons/developerworks_sdk/scenes/login.tscn")
+	if login_scene == null:
+		push_error("[DW_AuthManager] Login scene not found!")
+		return false
+
+	var login_instance = login_scene.instantiate()
+
+	# Use call_deferred to add child since we're in _ready() phase
+	get_tree().root.call_deferred("add_child", login_instance)
+
+	# Wait for the node to be added to the tree
+	while not login_instance.is_inside_tree():
+		await get_tree().process_frame
+
+	# Setup with auth manager and player client
+	if login_instance.has_method("setup"):
+		login_instance.setup(self, _player_client)
+
+	print("[DW_AuthManager] Login UI shown, waiting for user input...")
+
+	# Create a helper to track which signal was emitted
+	var login_result = {"success": false, "completed": false}
+
+	var on_success = func():
+		print("[DW_AuthManager] Login success signal received")
+		login_result.success = true
+		login_result.completed = true
+
+	var on_failed = func(error):
+		print("[DW_AuthManager] Login failed signal received: ", error)
+		login_result.success = false
+		login_result.completed = true
+
+	login_instance.login_success.connect(on_success)
+	login_instance.login_failed.connect(on_failed)
+
+	# Wait until one of the signals fires
+	while not login_result.completed:
+		await get_tree().process_frame
+
+	print("[DW_AuthManager] Login completed, success: ", login_result.success)
+
+	# Clean up login UI immediately
+	if is_instance_valid(login_instance):
+		# Hide first for instant feedback
+		login_instance.visible = false
+		# Then queue free
+		login_instance.queue_free()
+
+	print("[DW_AuthManager] Login UI closed")
+	return login_result.success
 
 ## Get PlayerClient for public access
 func get_player_client() -> Node:

@@ -61,7 +61,11 @@ func chat_completion_async(request: AIDataModels.ChatCompletionRequest) -> AIDat
 		return null
 
 	if response_code != 200:
-		push_error("[AIChatProvider] API Error: ", response_code, " - ", body.get_string_from_utf8())
+		var error = DWExceptions.parse_api_error(
+			body.get_string_from_utf8(),
+			response_code
+		)
+		DWErrorHelpers.log_error(error, "chat_completion_async")
 		return null
 
 	var json_result = JSON.parse_string(body.get_string_from_utf8())
@@ -144,6 +148,22 @@ func chat_completion_stream_async(
 		on_finally.call()
 		return
 
-	await http.request_completed
+	var response = await http.request_completed
+
+	# Check for errors in streaming response
+	var result = response[0]
+	var response_code = response[1]
+	var body = response[3]
+
+	if result != HTTPRequest.RESULT_SUCCESS:
+		push_error("[AIChatProvider] Stream request failed: ", result)
+
+	if response_code != 200:
+		var error = DWExceptions.parse_api_error(
+			body.get_string_from_utf8(),
+			response_code
+		)
+		DWErrorHelpers.log_error(error, "chat_completion_stream_async")
+
 	http.queue_free()
 	on_finally.call()
